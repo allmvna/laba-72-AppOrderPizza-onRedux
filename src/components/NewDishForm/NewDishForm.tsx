@@ -1,9 +1,9 @@
-import {Button, TextField, Typography} from "@mui/material";
+import {Button, CircularProgress, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import React, {useState} from "react";
-import {addDish} from "../../slices/sliceDish/sliceDish.tsx";
-import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../app/hooks.ts";
+import React, {useEffect, useState} from "react";
+import {addDish, updateDish} from "../../slices/sliceDish/sliceDish.tsx";
+import {useNavigate, useParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 
 const initialDish = {
     id:'',
@@ -13,9 +13,19 @@ const initialDish = {
 };
 
 const NewDishForm = () => {
+    const { id } = useParams();
     const [formData, setFormData] = useState(initialDish);
+    const { isLoading } = useAppSelector((state) => state.menu);
+    const dishes = useAppSelector(state => state.menu.dishes);
+    const dish = dishes.find(d => d.id === id);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (id && dish) {
+            setFormData(dish);
+        }
+    }, [id, dish]);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,15 +37,19 @@ const NewDishForm = () => {
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await dispatch(addDish(formData));
+        if (id) {
+            await dispatch(updateDish(formData));
+        } else {
+            await dispatch(addDish(formData));
+        }
         navigate('/admin/dishes');
         setFormData(initialDish);
     };
 
     return (
         <>
-            <Typography sx={{ mb: 2, textAlign: "center", color: "#112735" }} variant="h4">
-                Add new dish
+            <Typography sx={{ mb: 2, textAlign: "center", color: "black", fontWeight: "bold" }} variant="h4">
+                {id ? "Edit Dish" : "Add New Dish"}
             </Typography>
             <form onSubmit={onSubmit}>
                 <Grid
@@ -105,13 +119,16 @@ const NewDishForm = () => {
                             size="large"
                             type="submit"
                             variant="contained"
+                            disabled={isLoading}
+                            sx={{
+                                backgroundColor: '#1e012b',
+                            }}
                         >
-                            Save
+                            {isLoading ? <CircularProgress size={20} sx={{ color: "white" }} /> : 'Save'}
                         </Button>
                     </Grid>
                 </Grid>
             </form>
-
         </>
     );
 };

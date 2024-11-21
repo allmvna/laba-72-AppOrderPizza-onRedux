@@ -1,4 +1,4 @@
-import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
+import {Alert, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -6,10 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {deleteDish, fetchDishes} from "../../slices/sliceDish/sliceDish.tsx";
 import {useEffect} from "react";
+import Loader from "../../UI/Loader'/Loader.tsx";
 
 
 const Dishes = () => {
-    const { dishes } = useAppSelector((state) => state.menu);
+    const { dishes, error, isLoading } = useAppSelector((state) => state.menu);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -61,6 +62,11 @@ const Dishes = () => {
                     </Button>
                 </Grid>
             </Grid>
+            {isLoading ? (
+                <Loader />
+            ) : error ? (
+                <Alert severity="error">No data. Try again!</Alert>
+            ) : (
             <Grid container spacing={2} sx ={{mt: 3}}>
                 {dishes.map((dish) => (
                     <Grid size={12} key={dish.id}>
@@ -105,17 +111,19 @@ const Dishes = () => {
                                             }}
                                         />
                                     )}
-                                    <Typography sx={{fontSize: 20, fontWeight: 600, ml: 1}}>
+                                    <Typography sx={{fontSize: 20, fontWeight: 600, ml: 1, borderRight: '1px solid #000', pr: 2}}>
                                         {dish.title}
                                     </Typography>
                                     <Typography sx={{fontSize: 20, fontWeight: 600, ml: 3, color: "green"}}>
-                                       - {dish.price} KGS
+                                       {dish.price} KGS
                                     </Typography>
                                 </Grid>
                                 <CardActions sx={{ marginLeft: "auto" }}>
                                     <Button
-                                        variant="contained"
-                                        sx={{ mr: 2,
+                                            component={NavLink}
+                                            to={`/${dish.id}/edit`}
+                                            variant="contained"
+                                            sx={{ mr: 2,
                                             backgroundColor: '#1e012b',
                                             transition: 'all 0.3s ease',
                                             '&:hover': {
@@ -147,6 +155,7 @@ const Dishes = () => {
                     </Grid>
                 ))}
             </Grid>
+            )}
         </>
     );
 };

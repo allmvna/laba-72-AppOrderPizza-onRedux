@@ -43,6 +43,11 @@ export const deleteDish = createAsyncThunk('dish/deleteDish', async (id: string)
     return id;
 });
 
+export const updateDish = createAsyncThunk('dish/updateDish', async (dish: IDish) => {
+    await axiosAPI.put(`/dishes/${dish.id}.json`, dish);
+    return dish;
+});
+
 
 export const sliceDish = createSlice({
     name: 'dish',
@@ -83,6 +88,22 @@ export const sliceDish = createSlice({
                 state.dishes = state.dishes.filter(dish => dish.id !== action.payload);
             })
             .addCase(deleteDish.rejected, (state) => {
+                state.isLoading = false;
+                state.error = true;
+            })
+            .addCase(updateDish.pending, (state) => {
+                state.isLoading = true;
+                state.error = false;
+            })
+            .addCase(updateDish.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                const index = state.dishes.findIndex(contact => contact.id === action.payload.id);
+                if (index !== -1) {
+                    state.dishes[index] = action.payload;
+                }
+            })
+            .addCase(updateDish.rejected, (state) => {
                 state.isLoading = false;
                 state.error = true;
             });

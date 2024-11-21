@@ -16,6 +16,7 @@ const OrderApp = () => {
                     <Route path="/admin/orders" element={<Orders />} />
                     <Route path="/admin/dishes" element={<Dishes />} />
                     <Route path="/new_dish" element={<NewDishForm />} />
+                    <Route path="/:id/edit" element={<NewDishForm />} />
                     <Route
                         path="*"
                         element={<Alert severity="error">Not found</Alert>}

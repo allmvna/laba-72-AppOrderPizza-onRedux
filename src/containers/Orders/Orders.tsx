@@ -1,9 +1,12 @@
+import {Typography} from "@mui/material";
 
 const Orders = () => {
     return (
-        <div>
-
-        </div>
+        <>
+            <Typography variant="h4" color="black" textAlign='center' sx={{fontWeight: '600', textAlign: 'center' }}>
+                Orders
+            </Typography>
+        </>
     );
 };
 
