@@ -1,9 +1,25 @@
-import {Button, Typography} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid2";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {deleteDish, fetchDishes} from "../../slices/sliceDish/sliceDish.tsx";
+import {useEffect} from "react";
 
 
 const Dishes = () => {
+    const { dishes } = useAppSelector((state) => state.menu);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchDishes());
+    }, [dispatch]);
+
+    const deleteThisDish = (id: string) => {
+        dispatch(deleteDish(id));
+    };
+
     return (
         <>
             <Grid
@@ -44,6 +60,92 @@ const Dishes = () => {
                         Add new dish
                     </Button>
                 </Grid>
+            </Grid>
+            <Grid container spacing={2} sx ={{mt: 3}}>
+                {dishes.map((dish) => (
+                    <Grid size={12} key={dish.id}>
+                        <Card
+                            sx={{
+                                minWidth: 275,
+                                margin: 'auto',
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                overflow: "hidden",
+                                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                                "&:hover": {
+                                    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+                                },
+                            }}
+                        >
+                            <CardContent
+                                sx={{
+                                    backgroundColor: "white",
+                                    mb: 1,
+                                    textAlign: "center",
+                                    display: "flex",
+                                    justifyContent: "flex-start",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Grid size={12}
+                                      sx={{
+                                          display: "flex",
+                                          alignItems: "center"
+                                      }}>
+                                    {dish.image && (
+                                        <img
+                                            src={dish.image}
+                                            alt={dish.title}
+                                            style={{
+                                                width: "150px",
+                                                height: "150px",
+                                                borderRadius: "50%",
+                                                objectFit: "cover",
+                                                marginRight: "10px",
+                                            }}
+                                        />
+                                    )}
+                                    <Typography sx={{fontSize: 20, fontWeight: 600, ml: 1}}>
+                                        {dish.title}
+                                    </Typography>
+                                    <Typography sx={{fontSize: 20, fontWeight: 600, ml: 3, color: "green"}}>
+                                       - {dish.price} KGS
+                                    </Typography>
+                                </Grid>
+                                <CardActions sx={{ marginLeft: "auto" }}>
+                                    <Button
+                                        variant="contained"
+                                        sx={{ mr: 2,
+                                            backgroundColor: '#1e012b',
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                transform: 'scale(1.05)',
+                                            },
+                                    }}
+                                    >
+                                        <DriveFileRenameOutlineIcon/>
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        sx={{ mr: 2,
+                                            transition: 'all 0.3s ease',
+                                            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                                            '&:hover': {
+                                                boxShadow: '0 8px 15px rgba(0, 0, 0, 0.3)',
+                                                transform: 'scale(1.05)',
+                                            },
+                                        }}
+                                        onClick={() => deleteThisDish(dish.id)}
+
+                                    >
+                                        <DeleteIcon/>
+                                    </Button>
+                                </CardActions>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
             </Grid>
         </>
     );

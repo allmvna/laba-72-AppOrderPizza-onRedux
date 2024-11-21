@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import {dishReducer} from "../slices/sliceDish/sliceDish.tsx";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    menu: dishReducer
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

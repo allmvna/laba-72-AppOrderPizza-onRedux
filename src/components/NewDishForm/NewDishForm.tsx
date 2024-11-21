@@ -1,26 +1,35 @@
 import {Button, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, {useState} from "react";
+import {addDish} from "../../slices/sliceDish/sliceDish.tsx";
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../app/hooks.ts";
 
-const initialContact = {
+const initialDish = {
+    id:'',
     title: '',
     price: 0,
     image: '',
 };
 
 const NewDishForm = () => {
-    const [formData, setFormData] = useState(initialContact);
+    const [formData, setFormData] = useState(initialDish);
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: name === 'price' ? +value : value,
         }));
     };
 
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        await dispatch(addDish(formData));
+        navigate('/admin/dishes');
+        setFormData(initialDish);
     };
 
     return (
@@ -66,6 +75,7 @@ const NewDishForm = () => {
                             }}
                             id="price"
                             label="Price"
+                            type="number"
                             variant="outlined"
                             name="price"
                             value={formData.price}
