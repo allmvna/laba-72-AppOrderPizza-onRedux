@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const NavbarForAdmin = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1, mb: 5 }}>
@@ -83,4 +83,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarForAdmin;

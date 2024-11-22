@@ -1,19 +1,20 @@
-import React, { PropsWithChildren } from "react";
-import Navbar from "../../components/Navbar/Navbar.tsx";
-import { Container } from "@mui/material";
+import React, {PropsWithChildren} from "react";
+import NavbarForAdmin from "../../components/NavbarForAdmin/NavbarForAdmin.tsx";
+import {useLocation} from "react-router-dom";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
+
+    const location = useLocation();
+
+    const showNavbar = location.pathname.includes("admin");
+
   return (
-    <>
-      <header>
-        <Navbar />
-      </header>
-      <main>
-        <Container maxWidth="lg" sx={{ color: "white" }}>
-          {children}
-        </Container>
-      </main>
-    </>
+      <>
+          <header>{showNavbar && <NavbarForAdmin/>}</header>
+          <main>
+                  {children}
+          </main>
+      </>
   );
 };
 
