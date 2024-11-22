@@ -53,13 +53,13 @@ const CheckoutModal = ()=> {
                 </Button>
                 <Box>
                     {orders.map((dish) => (
-                        <Box key={dish.id} sx={{
+                        <Box key={dish.orderId} sx={{
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             marginBottom: '10px'
                         }}>
-                            <Typography>{dish.title}</Typography>
+                            <Typography>{dish.title} x {dish.quantity}</Typography>
                             <Typography  fontWeight='bold' color="green">{dish.price} KGS</Typography>
                             <Button
                                 variant="contained"

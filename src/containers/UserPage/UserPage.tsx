@@ -10,8 +10,9 @@ import CheckoutModal from "../../components/CheckoutModal/CheckoutModal.tsx";
 
 const UserPage = () => {
     const { dishes, error, isLoading } = useAppSelector((state) => state.menu);
-    const {total, isModalOpen } = useAppSelector((state) => state.orderModal);
+    const { orders, total, isModalOpen } = useAppSelector((state) => state.orderModal);
     const dispatch = useAppDispatch();
+
 
     useEffect(() => {
         dispatch(fetchDishes());
@@ -23,6 +24,11 @@ const UserPage = () => {
 
     const handleCheckout = () => {
         dispatch(toggleModal(true));
+    };
+
+    const getQuantity = (dishId: string) => {
+        const order = orders.find((orderDish) => orderDish.id === dishId);
+        return order ? order.quantity : 0;
     };
 
     return (
@@ -40,12 +46,14 @@ const UserPage = () => {
                                     sx={{
                                         minWidth: 275,
                                         margin: 'auto',
-                                        border: "3px solid #1e012b",
+                                        border:"3px solid #1e012b",
                                         borderRadius: "15px",
                                         overflow: "hidden",
                                         cursor: 'pointer',
+                                        position: 'relative',
                                         "&:hover": {
                                             boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
+                                            borderColor: 'gray'
                                         }
                                     }}
                                     onClick={() => handleAddToCart(dish)}
@@ -86,6 +94,21 @@ const UserPage = () => {
                                             </Typography>
                                         </Grid>
                                     </CardContent>
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 10,
+                                            right: 10,
+                                            backgroundColor: 'green',
+                                            color: 'white',
+                                            padding: '5px 10px',
+                                            borderRadius: '5px',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+
+                                        + {getQuantity(dish.id)}
+                                    </Box>
                                 </Card>
                             </Grid>
                         ))}

@@ -1,5 +1,6 @@
 import React, {PropsWithChildren} from "react";
 import Navbar from "../../components/Navbar/Navbar.tsx";
+import {Container} from "@mui/material";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
 
@@ -9,7 +10,9 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
               <Navbar/>
           </header>
           <main>
-              {children}
+              <Container>
+                  {children}
+              </Container>
           </main>
       </>
   );
