@@ -1,18 +1,15 @@
 import React, {PropsWithChildren} from "react";
-import NavbarForAdmin from "../../components/NavbarForAdmin/NavbarForAdmin.tsx";
-import {useLocation} from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar.tsx";
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
 
-    const location = useLocation();
-
-    const showNavbar = location.pathname.includes("admin");
-
   return (
       <>
-          <header>{showNavbar && <NavbarForAdmin/>}</header>
+          <header>
+              <Navbar/>
+          </header>
           <main>
-                  {children}
+              {children}
           </main>
       </>
   );

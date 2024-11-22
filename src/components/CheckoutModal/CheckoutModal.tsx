@@ -1,15 +1,12 @@
-import {useAppDispatch} from "../../app/hooks.ts";
-import {OrderDish, removeFromOrder, toggleModal} from "../../slices/orderModalSlice/orderModalSlice.tsx";
+import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
+import {removeFromOrder, toggleModal} from "../../slices/orderModalSlice/orderModalSlice.tsx";
 import {Box, Button, Modal, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from '@mui/icons-material/Clear';
 
-interface CheckoutModalProps {
-    orders: OrderDish[];
-    total: number;
-}
-
-const CheckoutModal = ({ orders, total }: CheckoutModalProps) => {
+const CheckoutModal = ()=> {
     const dispatch = useAppDispatch();
+    const { orders, total, isModalOpen } = useAppSelector((state) => state.orderModal);
 
     const handleClose = () => {
         dispatch(toggleModal(false));
@@ -21,7 +18,7 @@ const CheckoutModal = ({ orders, total }: CheckoutModalProps) => {
 
     return (
         <Modal
-            open={true}
+            open={isModalOpen}
             onClose={handleClose}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
@@ -42,6 +39,18 @@ const CheckoutModal = ({ orders, total }: CheckoutModalProps) => {
                 <Typography id="modal-title" variant="h6" marginBottom='10px' fontWeight='bold'>
                     Your Order
                 </Typography>
+                <Button
+                    aria-label="Close Modal"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
+                        color: 'black'
+                    }}
+                >
+                    <ClearIcon/>
+                </Button>
                 <Box>
                     {orders.map((dish) => (
                         <Box key={dish.id} sx={{
@@ -50,7 +59,7 @@ const CheckoutModal = ({ orders, total }: CheckoutModalProps) => {
                             alignItems: 'center',
                             marginBottom: '10px'
                         }}>
-                            <Typography sx={{ml: 1, borderRight: '1px solid #000', pr: 3}}>{dish.title}</Typography>
+                            <Typography>{dish.title}</Typography>
                             <Typography  fontWeight='bold' color="green">{dish.price} KGS</Typography>
                             <Button
                                 variant="contained"
@@ -66,17 +75,18 @@ const CheckoutModal = ({ orders, total }: CheckoutModalProps) => {
                         </Box>
                     ))}
                 </Box>
-                <Box sx={{ marginTop: '25px', display: 'flex', justifyContent: 'space-between' }}>
+                <Box sx={{ marginTop: '25px' }}>
                     <Typography variant="h6" fontWeight='bold'>Total: {total} KGS</Typography>
-                    <Button
-                        variant="contained"
-                        onClick={handleClose}
-                        sx={{
-                            backgroundColor: '#1e012b',
-                        }}
-                    >
-                        Close
-                    </Button>
+                    <Box sx={{ marginTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: '#1e012b',
+                            }}
+                        >
+                            Order
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
         </Modal>

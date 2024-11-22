@@ -4,14 +4,13 @@ import Grid from "@mui/material/Grid2";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {useEffect} from "react";
 import {fetchDishes, IDish} from "../../slices/sliceDish/sliceDish.tsx";
-import NavbarForUser from "../../components/NavbarForUserPage/NavbarForUser.tsx";
 import {addToOrder, toggleModal} from "../../slices/orderModalSlice/orderModalSlice.tsx";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal.tsx";
 
 
 const UserPage = () => {
     const { dishes, error, isLoading } = useAppSelector((state) => state.menu);
-    const { total, orders, isModalOpen } = useAppSelector((state) => state.orderModal);
+    const {total, isModalOpen } = useAppSelector((state) => state.orderModal);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -28,11 +27,6 @@ const UserPage = () => {
 
     return (
         <>
-            <>
-                <header>
-                    <NavbarForUser />
-                </header>
-            </>
             {isLoading ? (
                 <Loader />
             ) : error ? (
@@ -96,8 +90,6 @@ const UserPage = () => {
                             </Grid>
                         ))}
                     </Grid>
-
-
                     <Box sx={{ mt: 4, display: 'flex', alignItems: "center", justifyContent: 'space-between' }}>
                         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                             Order Total: {total} KGS
@@ -118,9 +110,9 @@ const UserPage = () => {
                         </Button>
                     </Box>
                 </Container>
-            )};
+            )}
 
-            {isModalOpen && <CheckoutModal orders={orders} total={total} />}
+            {isModalOpen && <CheckoutModal />}
         </>
     );
 };
