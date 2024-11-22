@@ -32,7 +32,7 @@ const CheckoutModal = ()=> {
                 padding: '20px',
                 borderRadius: '10px',
                 boxShadow: 24,
-                width: '500px',
+                width: '700px',
                 height: 'auto',
                 overflowY: 'auto',
             }}>
@@ -57,27 +57,46 @@ const CheckoutModal = ()=> {
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            marginBottom: '10px'
+                            marginBottom: '15px',
+                            padding: '5px 0',
+                            borderBottom: '1px solid #ddd',
                         }}>
-                            <Typography>{dish.title} x {dish.quantity}</Typography>
-                            <Typography  fontWeight='bold' color="green">{dish.price} KGS</Typography>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                sx={{
-                                    minWidth: '40px',
-                                    padding: '5px',
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <img
+                                src={dish.image}
+                                alt={dish.title}
+                                style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "50%",
+                                    objectFit: "cover",
+                                    marginRight: '10px',
                                 }}
-                                onClick={() => handleDelete(dish.orderId)}
-                            >
-                                <DeleteIcon />
-                            </Button>
-                        </Box>
+                            />
+                                <Typography>{dish.title} x {dish.quantity}</Typography>
+                            </Box>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                    <Typography fontWeight='bold' color="green" sx={{ minWidth: '80px', textAlign: 'right' }}>
+                                        {dish.price} KGS
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        sx={{
+                                            minWidth: '40px',
+                                            padding: '5px',
+                                            marginLeft: '10px'
+                                        }}
+                                        onClick={() => handleDelete(dish.orderId)}
+                                    >
+                                        <DeleteIcon/>
+                                    </Button>
+                            </Box>
+                            </Box>
                     ))}
                 </Box>
-                <Box sx={{ marginTop: '25px' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '25px' }}>
                     <Typography variant="h6" fontWeight='bold'>Total: {total} KGS</Typography>
-                    <Box sx={{ marginTop: '10px', display: 'flex', justifyContent: 'space-between' }}>
                         <Button
                             variant="contained"
                             sx={{
@@ -86,7 +105,6 @@ const CheckoutModal = ()=> {
                         >
                             Order
                         </Button>
-                    </Box>
                 </Box>
             </Box>
         </Modal>
