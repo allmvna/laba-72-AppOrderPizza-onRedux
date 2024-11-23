@@ -55,25 +55,25 @@ const Orders = () => {
                                                     src={order.image}
                                                     alt={order.title}
                                                     style={{
-                                                        width: "150px",
-                                                        height: "150px",
+                                                        width: "70px",
+                                                        height: "70px",
                                                         borderRadius: "50%",
                                                         objectFit: "cover",
                                                         marginRight: "10px",
                                                     }}
                                                 />
                                             )}
-                                            <Typography sx={{ fontSize: 18, fontWeight: 600, ml: 1, borderRight: '1px solid #000', pr: 2 }}>
+                                            <Typography sx={{ fontWeight: 600, borderRight: '1px solid #000', pr: 1 }}>
                                                 {order.title} x {order.quantity}
                                             </Typography>
-                                            <Typography sx={{ fontSize: 18, fontWeight: 600, ml: 3, color: "green" }}>
-                                                {order.price} KGS
+                                            <Typography sx={{ fontWeight: 600, ml: 3, color: "green" }}>
+                                                {order.price}KGS
                                             </Typography>
                                         </Grid>
 
-                                        <Grid size={4} sx={{ fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
+                                        <Grid size={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
                                             <Typography sx={{ fontWeight: 600 }}>
-                                                Total: {order.price * order.quantity} KGS
+                                                = {order.price * order.quantity} KGS
                                             </Typography>
                                             <Button
                                                 onClick={() => handleDeleteOrder(order.orderId)}

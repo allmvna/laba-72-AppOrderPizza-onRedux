@@ -93,10 +93,8 @@ export const deleteOrder = createAsyncThunk(
 
 export const DELIVERY_COST = 150;
 
-const calculateTotal = (orders: OrderDish[]) => {
-    const orderTotal = orders.reduce((sum, dish) => sum + dish.price * dish.quantity, 0);
-    return orderTotal + (orders.length > 0 ? DELIVERY_COST : 0);
-};
+const calculateTotal = (orders: OrderDish[]) =>
+    orders.reduce((sum, dish) => sum + dish.price * dish.quantity, 0) + DELIVERY_COST;
 
 
 export const orderModalSlice = createSlice({
@@ -140,43 +138,23 @@ export const orderModalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addOrders.pending, (state) => {
-                state.isLoading = true;
-                state.error = false;
-            })
-            .addCase(addOrders.fulfilled, (state) => {
-                state.isLoading = false;
-            })
-            .addCase(addOrders.rejected, (state) => {
-                state.isLoading = false;
-                state.error = true;
-            })
-            .addCase(fetchOrders.pending, (state) => {
-                state.isLoading = true;
-                state.error = false;
-            })
-            .addCase(fetchOrders.fulfilled, (state, action: PayloadAction<OrderDish[]>) => {
+            .addCase(addOrders.pending, state => { state.isLoading = true; state.error = false; })
+            .addCase(addOrders.fulfilled, state => { state.isLoading = false; })
+            .addCase(addOrders.rejected, state => { state.isLoading = false; state.error = true; })
+            .addCase(fetchOrders.pending, state => { state.isLoading = true; state.error = false; })
+            .addCase(fetchOrders.fulfilled, (state, action) => {
                 state.orders = action.payload;
                 state.total = calculateTotal(state.orders);
                 state.isLoading = false;
             })
-            .addCase(fetchOrders.rejected, (state) => {
-                state.isLoading = false;
-                state.error = true;
-            })
-            .addCase(deleteOrder.pending, (state) => {
-                state.isLoading = true;
-                state.error = false;
-            })
+            .addCase(fetchOrders.rejected, state => { state.isLoading = false; state.error = true; })
+            .addCase(deleteOrder.pending, state => { state.isLoading = true; state.error = false; })
             .addCase(deleteOrder.fulfilled, (state, action) => {
                 state.orders = state.orders.filter(order => order.orderId !== action.payload);
                 state.total = calculateTotal(state.orders);
                 state.isLoading = false;
             })
-            .addCase(deleteOrder.rejected, (state) => {
-                state.isLoading = false;
-                state.error = true;
-            });
+            .addCase(deleteOrder.rejected, state => { state.isLoading = false; state.error = true; });
     }
 });
 
