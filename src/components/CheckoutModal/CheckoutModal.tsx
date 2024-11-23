@@ -1,8 +1,9 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {removeFromOrder, toggleModal} from "../../slices/orderModalSlice/orderModalSlice.tsx";
+import {addOrders, clearOrders, removeFromOrder, toggleModal} from "../../slices/orderModalSlice/orderModalSlice.tsx";
 import {Box, Button, Modal, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from '@mui/icons-material/Clear';
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
 const CheckoutModal = ()=> {
     const dispatch = useAppDispatch();
@@ -14,6 +15,13 @@ const CheckoutModal = ()=> {
 
     const handleDelete = (id: string) => {
         dispatch(removeFromOrder(id));
+    };
+
+    const handleSubmitOrder = async () => {
+        await dispatch(addOrders(orders));
+        alert('Order added successfully!');
+        dispatch(clearOrders());
+        dispatch(toggleModal(false));
     };
 
     return (
@@ -33,7 +41,7 @@ const CheckoutModal = ()=> {
                 borderRadius: '10px',
                 boxShadow: 24,
                 width: '700px',
-                height: 'auto',
+                height: '70vh',
                 overflowY: 'auto',
             }}>
                 <Typography id="modal-title" variant="h6" marginBottom='10px' fontWeight='bold'>
@@ -95,9 +103,21 @@ const CheckoutModal = ()=> {
                             </Box>
                     ))}
                 </Box>
+                <Typography
+                    fontWeight="bold"
+                    textAlign="right"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                    gap={1}
+                >
+                    <DeliveryDiningIcon style={{ color: '#378210' }} />
+                    <span> 150 KGS!</span>
+                </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '25px' }}>
                     <Typography variant="h6" fontWeight='bold'>Total: {total} KGS</Typography>
                         <Button
+                            onClick={handleSubmitOrder}
                             variant="contained"
                             sx={{
                                 backgroundColor: '#1e012b',

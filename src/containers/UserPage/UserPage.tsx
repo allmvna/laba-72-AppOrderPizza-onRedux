@@ -54,6 +54,9 @@ const UserPage = () => {
                                         "&:hover": {
                                             boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
                                             borderColor: 'gray'
+                                        },
+                                        "&:active": {
+                                            borderColor: 'green'
                                         }
                                     }}
                                     onClick={() => handleAddToCart(dish)}
